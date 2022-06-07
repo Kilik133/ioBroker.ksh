@@ -1,4 +1,8 @@
-Changelog
+### Changelog
 
-v0.0.1
-- Startversion erstellt.
+**v0.0.2**
+- kleinere Anpassungen der Adminview durchgeführt.
+- Lizenz Datei hinzugefügt um die Adapteransicht anzupassen.
+
+**v0.0.1**
+- Erste Version erstellt.
