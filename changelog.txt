@@ -1,6 +1,6 @@
 ### Changelog
 
-**v0.0.2**
+**v0.0.2** build 2267+
 - kleinere Anpassungen der Adminview durchgeführt.
 - Lizenz Datei hinzugefügt um die Adapteransicht anzupassen.
 
