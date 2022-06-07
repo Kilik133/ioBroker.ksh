@@ -97,7 +97,7 @@
         }
     }
 
-    // the function loadSettings has to exist ...
+    // function loadSettings
     function load(settings, _onChange) {
         onChange = _onChange;
         settings.retransmitInterval = settings.retransmitInterval || 2000;
@@ -161,7 +161,7 @@
 
     function save(callback) {
         if ($('#pass').val() !== $('#pass_confirm').val()) {
-            showMessage(_('Password confirmation is not equal with password'));
+            showMessage(_('Beide Passworteingaben stimmen nicht überein.'));
             return;
         }
         if ($('#ssl').prop('checked') && $('#type').val() === 'server' && (!$('#certPrivate').val() || !$('#certPublic').val())) {
@@ -210,7 +210,7 @@
                         <label>IP Adresse:</label>
                     </div>
                     <div class="input-field col s12 m6 l4">
-                        <input id="port" type="number" min="1" max="65565" class="value" />
+                        <input type="number" id="port" min="1" max="65565" class="value" />
                         <label>Port:</label>
                     </div>
                 </div>
@@ -221,11 +221,11 @@
                         <label>User:</label>
                     </div>
                     <div class="input-field col s12 m6 l4">
-                        <input id="pass" type="password" size="17" class="value" />
+                        <input type="password" id="pass" size="17" class="value" />
                         <label>Password:</label>
                     </div>
                     <div class="input-field col s12 m6 l4">
-                        <input id="pass_confirm" type="password" size="17" />
+                        <input type="password" id="pass_confirm" size="17" />
                         <label>Password wiederholen:</label>
                     </div>
                 </div>
