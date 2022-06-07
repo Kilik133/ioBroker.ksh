@@ -9,7 +9,7 @@
     },
     "title": "KSH Adapter",
     "titleLang": {
-      "de": "KiliksSmarthomeTechnikAdapter"
+      "de": "KiliksSmartHomeAdapter"
     },
     "desc": {
       "de": "Der Adapter ermöglicht die Kommunikation von meinen KSH Geräten mit dem IoB"
