@@ -1,0 +1,236 @@
+<html>
+<head>
+<!-- Materialze style -->
+<link rel="stylesheet" type="text/css" href="../../css/adapter.css"/>
+<link rel="stylesheet" type="text/css" href="../../lib/css/materialize.css">
+
+<script type="text/javascript" src="../../lib/js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="../../socket.io/socket.io.js"></script>
+
+<script type="text/javascript" src="../../js/translate.js"></script>
+<script type="text/javascript" src="../../lib/js/materialize.js"></script>
+<script type="text/javascript" src="../../js/adapter-settings.js"></script>
+<script type="text/javascript" src="words.js"></script>
+
+<script type="text/javascript">
+    var onChange;
+
+    function encrypt(key, value) {
+        var result = '';
+        for(var i = 0; i < value.length; ++i) {
+            result += String.fromCharCode(key[i % key.length].charCodeAt(0) ^ value.charCodeAt(i));
+        }
+        return result;
+    }
+
+    function decrypt(key, value) {
+        var result = '';
+        for(var i = 0; i < value.length; ++i) {
+            result += String.fromCharCode(key[i % key.length].charCodeAt(0) ^ value.charCodeAt(i));
+        }
+        return result;
+    }
+
+    function setValue(id, value) {
+        var $value = $('#' + id + '.value');
+        if ($value.attr('type') === 'checkbox') {
+            $value.prop('checked', value).change(function() {
+                onChange();
+            });
+        } else {
+            $value.val(value).change(function() {
+                onChange();
+            }).keyup(function() {
+                // Check that only numbers entered
+                if ($(this).hasClass('number')) {
+                    var val = $(this).val();
+                    if (val) {
+                        var newVal = '';
+                        for (var i = 0; i < val.length; i++) {
+                            if (val[i] >= '0' && val[i] <= '9') {
+                                newVal += val[i];
+                            }
+                        }
+
+                        if (val != newVal) $(this).val(newVal);
+                    }
+                }
+
+                onChange();
+            });
+        }
+    }
+
+    function loadHelper(settings, param, subparam) {
+        if (!settings) return;
+        
+        if (subparam && param) {
+            for (var key in settings[param][subparam]) {
+                if (!settings[param][subparam].hasOwnProperty(key)) continue;
+                if (typeof settings[param][subparam][key] !== 'object') {
+                    setValue(param + '_' + subparam + '_' + key, settings[param][subparam][key]);
+                } else {
+                    alert('4th level is not supported');
+                }
+            }
+        } else if (param) {
+            for (var key in settings[param]) {
+                if (!settings[param].hasOwnProperty(key)) continue;
+                if (typeof settings[param][key] !== 'object') {
+                    setValue(param + '_' + key, settings[param][key]);
+                } else {
+                    loadHelper(settings, param, key);
+                }
+            }
+        } else {
+            for (var key in settings) {
+                if (!settings.hasOwnProperty(key)) continue;
+                if (typeof settings[key] !== 'object') {
+                    if (key === 'pass') {
+                        settings[key] = decrypt('Zgfr56gFe87jJOM', settings[key]);
+                    }
+                    setValue(key, settings[key]);
+                } else {
+                    loadHelper(settings, key);
+                }
+            }
+        }
+    }
+
+    // the function loadSettings has to exist ...
+    function load(settings, _onChange) {
+        onChange = _onChange;
+        settings.retransmitInterval = settings.retransmitInterval || 2000;
+        settings.retransmitCount = settings.retransmitCount || 10;
+        settings.sendAckToo = settings.sendAckToo || false;
+        settings.sendStateObject = settings.sendStateObject || false;
+        settings.webSocket  = settings.webSocket  || false;
+        settings.defaultQoS = (settings.defaultQoS === '' || settings.defaultQoS === -1 || settings.defaultQoS === '-1') ? -1 : settings.defaultQoS || 0;
+        if (settings.sendOnStartInterval === undefined) settings.sendOnStartInterval = 2000;
+        if (settings.sendInterval === undefined) settings.sendInterval = 10;
+        settings.clientId   = settings.clientId   || '';
+        loadHelper(settings);
+        $('#pass_confirm').val($('#pass').val());
+
+        init();
+
+        getIPs(function(ips) {
+            for (var i = 0; i < ips.length; i++) {
+                $('#bind').append('<option value="' + ips[i].address + '">' + ips[i].name + '</option>');
+            }
+            $('#bind.value').val(settings.bind).select();
+        });
+
+        onChange(false);
+        M && M.updateTextFields();
+    }
+
+    function saveHelper(obj, id, value) {
+        var ids = id.split('_');
+
+        if (ids.length === 1) {
+            if (ids[0] === 'pass') value = encrypt('Zgfr56gFe87jJOM', value);
+            obj[id] = value;
+        } else if (ids.length === 2) {
+            if (!obj[ids[0]]) obj[ids[0]] = {};
+            obj[ids[0]][ids[1]] = value;
+        } else if (ids.length === 3) {
+            if (!obj[ids[0]]) obj[ids[0]] = {};
+            if (!obj[ids[0]][ids[1]]) obj[ids[0]][ids[1]] = {};
+            obj[ids[0]][ids[1]][ids[2]] = value;
+        }
+        return obj;
+    }
+
+    function getSettings() {
+        var obj = {};
+        $('.value').each(function () {
+            var $this = $(this);
+            var id = $this.attr('id');
+
+            if ($this.attr('type') === 'checkbox') {
+                obj = saveHelper(obj, id, $this.prop('checked'))
+            } else {
+                obj = saveHelper(obj, id, $this.val())
+            }
+        });
+        obj.defaultQoS = parseInt(obj.defaultQoS, 10) || 0;
+
+        return obj;
+    }
+
+    function save(callback) {
+        if ($('#pass').val() !== $('#pass_confirm').val()) {
+            showMessage(_('Password confirmation is not equal with password'));
+            return;
+        }
+        if ($('#ssl').prop('checked') && $('#type').val() === 'server' && (!$('#certPrivate').val() || !$('#certPublic').val())) {
+            showMessage(_('Set certificates or load it first in the system settings (right top).'));
+            return;
+        }
+
+        callback(getSettings());
+    }
+</script>
+
+<style>
+    .sub-title {
+        margin-top: 2rem!important;
+        padding: 0.5rem;
+        background: #64b5f6;
+        color: white;
+    }
+    .main-page {
+        height: 100%;
+        overflow: hidden;
+        margin-bottom: 0 !important;
+    }
+    .page {
+        height: calc(100% - 34px) !important;
+    }
+</style>
+</head>
+<body>
+    <!-- you have to put your config page in a div with id adapter-container -->
+    <div class="m adapter-container">
+        <div class="main-page row">
+            <div id="tab-main" class="col s12 page">
+                <div class="row">
+                    <div class="col s6">
+                        <img src="ksh.png" class="logo">
+                    </div>
+                    <div class="col s12 m6 14">
+                         <h4>KiliksSmarthomeTechnik Adapter(v0.0.1) Einstellungen</h4>
+                    </div>
+                </div>
+                <h6 class="translate sub-title">Verbindung</h6>
+                <div class="row">
+                    <div class="input-field col s12 m6 l4" id="_url">
+                        <input type="text" id="url" size="17" class="value" />
+                        <label>IP Adresse:</label>
+                    </div>
+                    <div class="input-field col s12 m6 l4">
+                        <input id="port" type="number" min="1" max="65565" class="value" />
+                        <label>Port:</label>
+                    </div>
+                </div>
+                <h6 class="translate sub-title">Authentifizierung</h6>
+                <div class="row">
+                    <div class="input-field col s12 m6 l4">
+                        <input type="text" id="user" size="17" class="value" />
+                        <label>User:</label>
+                    </div>
+                    <div class="input-field col s12 m6 l4">
+                        <input id="pass" type="password" size="17" class="value" />
+                        <label>Password:</label>
+                    </div>
+                    <div class="input-field col s12 m6 l4">
+                        <input id="pass_confirm" type="password" size="17" />
+                        <label>Password wiederholen:</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
