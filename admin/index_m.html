@@ -97,7 +97,7 @@
         }
     }
 
-    // the function loadSettings has to exist ...
+    // function loadSettings
     function load(settings, _onChange) {
         onChange = _onChange;
         settings.retransmitInterval = settings.retransmitInterval || 2000;
@@ -161,7 +161,7 @@
 
     function save(callback) {
         if ($('#pass').val() !== $('#pass_confirm').val()) {
-            showMessage(_('Password confirmation is not equal with password'));
+            showMessage(_('Beide Passworteingaben stimmen nicht überein.'));
             return;
         }
         if ($('#ssl').prop('checked') && $('#type').val() === 'server' && (!$('#certPrivate').val() || !$('#certPublic').val())) {
@@ -199,10 +199,19 @@
                     <div class="col s6">
                         <img src="ksh.png" class="logo">
                     </div>
-                    <div class="col s12 m6 14">
-                         <h4>KiliksSmarthomeTechnik Adapter(v0.0.1) Einstellungen</h4>
+                    <div class="col s6">
+                         <h4>KiliksSmartHome Adapter(v0.0.1)</h4>
                     </div>
                 </div>
+                <h6 class="translate sub-title">Informationen</h6>
+                
+                <div class="row">
+                    <div class="input-field col s12 m6 l4" id="_version">
+                        <input type="text" id="version" size="17" class="value" readonly />
+                        <label>Aktuelle Version:</label>
+                    </div>
+                </div>
+                
                 <h6 class="translate sub-title">Verbindung</h6>
                 <div class="row">
                     <div class="input-field col s12 m6 l4" id="_url">
@@ -210,7 +219,7 @@
                         <label>IP Adresse:</label>
                     </div>
                     <div class="input-field col s12 m6 l4">
-                        <input id="port" type="number" min="1" max="65565" class="value" />
+                        <input type="number" id="port" min="1" max="65565" class="value" />
                         <label>Port:</label>
                     </div>
                 </div>
@@ -221,11 +230,11 @@
                         <label>User:</label>
                     </div>
                     <div class="input-field col s12 m6 l4">
-                        <input id="pass" type="password" size="17" class="value" />
+                        <input type="password" id="pass" size="17" class="value" />
                         <label>Password:</label>
                     </div>
                     <div class="input-field col s12 m6 l4">
-                        <input id="pass_confirm" type="password" size="17" />
+                        <input type="password" id="pass_confirm" size="17" />
                         <label>Password wiederholen:</label>
                     </div>
                 </div>
