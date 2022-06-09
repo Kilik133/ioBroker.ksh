@@ -1,10 +1,13 @@
 {
   "common": {
     "name": "iobroker.ksh",
-    "version": "0.0.1",
+    "version": "0.0.2,
     "news": {
       "0.0.1": {
         "de": "Startversion erstellt."
+      },
+      "0.0.2": {
+        "de": "kleinere Anpassungen der Adminview durchgeführt.\n Lizenz Datei hinzugefügt um die Adapteransicht anzupassen.\n ersten Test der Versionsanzeige beim Admin eingebaut."
       }
     },
     "title": "KSH Adapter",
