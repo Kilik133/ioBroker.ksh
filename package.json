@@ -1,7 +1,7 @@
 {
   "name": "iobroker.ksh",
   "description": "Der Adapter ermöglicht die Kommunikation von meinen KSH Geräten mit dem IoB.",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": "kilik <kilik133@gmail.com>",
   "homepage": "https://github.com/Kilik133/ioBroker.ksh", 
   "repository": {
