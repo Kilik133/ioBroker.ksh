@@ -3,14 +3,8 @@
     "name": "iobroker.ksh",
     "version": "0.0.4",
     "news": {
-      "0.0.2": {
-        "de": "kleinere Anpassungen der Adminview durchgeführt.\n Lizenz Datei hinzugefügt um die Adapteransicht anzupassen.\n ersten Test der Versionsanzeige beim Admin eingebaut."
-      },
-      "0.0.3": {
-        "de": "Hotfix."
-      },
       "0.0.4": {
-        "de": "xxx."
+        "de": "Problembehebung > Issue #3."
       }
     },
     "title": "KSH Adapter",
@@ -36,27 +30,84 @@
     "icon": "ksh.png",
     "materialize": true,
     "keywords": [
-      "iobroker",
-      "kst"
+      "ksh",
+      "KiliksSmartHome"
     ],
-   "extIcon": "https://github.com/Kilik133/ioBroker.ksh/blob/master/admin/ksh.png",
-   "type": "protocols",
-   "plugins": {
-     "sentry": {
-       "dsn": "https://40b55da1fb50459eab397fe8291e75fe@sentry.iobroker.net/91"
-     }
-   },
+    "extIcon": "https://github.com/Kilik133/ioBroker.ksh/blob/master/admin/ksh.png",
+    "type": "protocols",
+    "plugins": {
+      "sentry": {
+        "dsn": "https://40b55da1fb50459eab397fe8291e75fe@sentry.iobroker.net/91"
+      }
+    },
     "dependencies": [
       {
-        "js-controller": ">=2.0.0"
+        "js-controller": ">=3.0.0"
+      }
+    ],
+    "globalDependencies": [
+      {
+        "admin": ">=5.4.3"
       }
     ],
     "tier": 2,
     "connectionType": "local",
-    "dataSource": "push"
+    "dataSource": "push",
+    "adminUI": {
+      "config": "json"
+    },
+    "messages": [
+      {
+        "condition": {
+          "operand": "and",
+          "rules": [
+            "oldVersion<0.0.3",
+            "newVersion>=0.0.3"
+          ]
+        },
+        "title": {
+          "de": "TESTMESSAGE TITLE!"
+        },
+        "text": {
+          "de": "TESTMESSAGE TEXT!"
+        },
+        "level": "warn",
+        "buttons": [
+          "agree",
+          "cancel"
+        ]
+      },
+      {
+        "condition": {
+          "operand": "and",
+          "rules": [
+            "oldVersion<0.0.5",
+            "newVersion>=0.0.6"
+          ]
+        },
+        "title": {
+          "de": "WAS DAS HIER?"
+        },
+        "text": {
+          "de": "WAS DAS HIER TEXT"
+        },
+        "level": "warn",
+        "buttons": [
+          "agree",
+          "cancel"
+        ]
+      }
+    ]
   },
+  "encryptedNative": [
+    "pass"
+  ],
+  "protectedNative": [
+    "pass"
+  ],
   "native": {
     "type": "server",
+    "clientId": "",
     "bind": "0.0.0.0",
     "port": 1888,
     "ssl": false,
@@ -68,7 +119,10 @@
     "onchange": true,
     "publishAllOnStart": true,
     "debug": false,
-    "publish": "kst.0.*",
+    "publish": "ksh.0.*",
+    "certPublic": "",
+    "certPrivate": "",
+    "certChained": "",
     "prefix": "",
     "forceCleanSession": "no",
     "sendAckToo": false,
@@ -87,7 +141,11 @@
     "retain": false,
     "retransmitInterval": 2000,
     "retransmitCount": 10,
-    "storeClientsTime": 1440
+    "storeClientsTime": 1440,
+    "removePrefix": "",
+    "ignoreNewObjects": false,
+    "noRetain": false,
+    "allBinaries": false
   },
   "objects": [],
   "instanceObjects": [
@@ -95,16 +153,16 @@
       "_id": "info",
       "type": "channel",
       "common": {
-        "name": "Informationen"
+        "name": "Information"
       },
       "native": {}
     },
     {
-      "_id": "info.verbindungen",
+      "_id": "info.connection",
       "type": "state",
       "common": {
         "role": "indicator.connected",
-        "name": "Liste der Verbundenen Geräte",
+        "name": "connected client for MQTT",
         "type": "boolean",
         "read": true,
         "write": false,
