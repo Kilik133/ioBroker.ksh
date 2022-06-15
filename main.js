@@ -1,12 +1,3 @@
-/**
- *
- *      ioBroker KSH Adapter
- *
- *      (c) 2014-2022 Kilik <kilik133@gmail.com>
- *
- *      MIT License
- *
- */
 'use strict';
 
 const utils = require('@iobroker/adapter-core'); // Get common adapter utils

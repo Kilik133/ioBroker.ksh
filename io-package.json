@@ -1,8 +1,11 @@
 {
   "common": {
-    "name": "iobroker.ksh",
-    "version": "0.0.4",
+    "name": "ksh",
+    "version": "0.0.5",
     "news": {
+      "0.0.5": {
+        "de": "Problembehebung > Issue #5+#6."
+      },
       "0.0.4": {
         "de": "Problembehebung > Issue #3."
       }
@@ -47,7 +50,7 @@
     ],
     "globalDependencies": [
       {
-        "admin": ">=5.4.3"
+        "admin": ">=5.3.8"
       }
     ],
     "tier": 2,
@@ -106,46 +109,20 @@
     "pass"
   ],
   "native": {
-    "type": "server",
-    "clientId": "",
-    "bind": "0.0.0.0",
     "port": 1888,
-    "ssl": false,
-    "rejectUnauthorized": true,
-    "user": "KST_User",
+    "bind": "0.0.0.0",
+    "user": "KSH_User",
     "pass": "1234",
-    "url": "localhost",
-    "patterns": "#",
-    "onchange": true,
-    "publishAllOnStart": true,
-    "debug": false,
-    "publish": "ksh.0.*",
-    "certPublic": "",
-    "certPrivate": "",
-    "certChained": "",
-    "prefix": "",
-    "forceCleanSession": "no",
-    "sendAckToo": false,
-    "sendStateObject": false,
-    "webSocket": false,
-    "maxTopicLength": 100,
-    "publishOnSubscribe": true,
-    "extraSet": false,
-    "sendOnStartInterval": 2000,
-    "sendInterval": 10,
-    "keepalive": 1000,
-    "reconnectPeriod": 10,
-    "connectTimeout": 30,
-    "persistent": false,
+    "timeout": 300,
+    "TELE_SENSOR": true,
+    "TELE_STATE": false,
+    "STAT_RESULT": false,
+    "OBJ_TREE": false,
+    "storeClientsTime": 1440,
     "defaultQoS": 0,
-    "retain": false,
     "retransmitInterval": 2000,
     "retransmitCount": 10,
-    "storeClientsTime": 1440,
-    "removePrefix": "",
-    "ignoreNewObjects": false,
-    "noRetain": false,
-    "allBinaries": false
+    "ignorePings": false
   },
   "objects": [],
   "instanceObjects": [
@@ -161,12 +138,11 @@
       "_id": "info.connection",
       "type": "state",
       "common": {
-        "role": "indicator.connected",
-        "name": "connected client for MQTT",
-        "type": "boolean",
+        "role": "info.clients",
+        "name": "List of connected clients",
+        "type": "string",
         "read": true,
-        "write": false,
-        "def": false
+        "write": false
       },
       "native": {}
     }
