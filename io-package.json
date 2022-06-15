@@ -1,8 +1,11 @@
 {
   "common": {
-    "name": "iobroker.ksh",
-    "version": "0.0.4",
+    "name": "ksh",
+    "version": "0.0.5",
     "news": {
+      "0.0.5": {
+        "de": "Problembehebung > Issue #5+#6."
+      },
       "0.0.4": {
         "de": "Problembehebung > Issue #3."
       }
