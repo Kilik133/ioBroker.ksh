@@ -6,7 +6,9 @@ IoBroker Adapter für meine KSH Geräte
 ## Changelog
 
 **v0.0.5 - build 22xx**
-- Problembehebung > Issue #5+#6.
+- Problembehebung > Issue #6.
+- Neue Admin Ansicht zum test eingebaut > Issue #5.
+- MQTT Server funktionalität überarbeitet.
 - Logo Überarbeitet für bessere erkennbarkeit.
 
 **v0.0.4_build 22614**
