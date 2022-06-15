@@ -7,6 +7,7 @@ IoBroker Adapter für meine KSH Geräte
 
 **v0.0.5 - build 22xx**
 - Problembehebung > Issue #5+#6.
+- Logo Überarbeitet für bessere erkennbarkeit.
 
 **v0.0.4_build 22614**
 - Problembehebung > Issue #3.
